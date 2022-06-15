@@ -2,6 +2,7 @@ package org.sec.weather
 
 import org.springframework.stereotype.Service
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.RedisCallback
 import org.springframework.beans.factory.annotation.Autowired
 import com.fasterxml.jackson.databind.ObjectMapper
 
@@ -28,4 +29,8 @@ class WeeklyWeatherCacheService {
 
     fun removeWeeklyWeather(location: String) =
         redisConfig?.redisTemplate()?.delete(weeklyWeatherCacheKey(location));
+
+    fun ping() = redisConfig?.redisTemplate()?.execute(RedisCallback<String> { connection ->
+        connection.ping()
+    })
 }
